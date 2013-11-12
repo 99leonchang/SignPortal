@@ -6,8 +6,8 @@ PocketMine-MP multiworld sign portal
 ## Configuration
 | Name | Type | Description |
 | :---: | :---: | :--- |
-| __USEPERMISSION__ | string | Changes wether or not to use Permissions. 1=enabled, 0=disabled |
-If usepermission is enabled, the plugin will only allow admins to create portals
+| __USEPERMISSIONS__ | integer | Changes wether or not to use Permissions. 1=enabled, 0=disabled |
+If usepermissions is enabled, the plugin will only allow admins to create portals
 
 ## Usage
 Create a sign with the format below
