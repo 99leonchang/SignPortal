@@ -4,7 +4,7 @@
 __PocketMine Plugin__ 
 name=SignPortal
 description=Multiworld portal plugin
-version=1.0
+version=1.0.1
 author=99leonchang
 class=SignPortal
 apiversion=10
@@ -20,12 +20,45 @@ class SignPortal implements Plugin{
     public function init(){
         $this->api->addHandler("player.block.touch", array($this, "eventHandler"));
         $this->api->addHandler("tile.update", array($this, "eventHandler"));
+        $this->api->console->register("signportal", "[SignPortal] Adds an admin that can create portals", array($this, 'commandH'));
+        $this->api->console->alias("sp", "signportal");
         $this->config = new Config($this->api->plugin->configPath($this)."config.yml", CONFIG_YAML, array(
-                "USEPERMISSIONS" => 1
+                "USEPERMISSIONS" => 1,
+                "admins" => array()
             ));
 
     }
     public function __destruct() {}
+
+    public function commandH($cmd, $params) {
+        switch($cmd)
+            $this->config->reload();
+            switch (array_shift($params)) {
+                case 'add':
+                    $usrname = (int) array_shift($params);
+                    if(!in_array($usrname, $this->config->get('admins'))) {
+                        $co = $this->config->get('admins');
+                        array_push($c, $usrname);
+                        $this->config->set('admins', $co);
+                        $this->config->save();
+                        $this->config->reload();
+                    }
+                    break;
+
+                case 'remove':
+                    $usrname = (int) array_shift($params);
+                    if(in_array($usrname, $this->config->get('admins'))) {
+                        $co = $this->config->get("admins");
+                        $key = array_search($usrname, $co);
+                        unset($c[$key]);
+                        $this->config->set("admins", $c);
+                        $this->config->save();
+                        $this->config->reload();
+                    }
+                    break;
+            }
+        }
+    }
 
     public function eventHandler(&$data, $event){
         switch ($event) {
@@ -53,13 +86,24 @@ class SignPortal implements Plugin{
                     }
                     else {
                         if ($data->data['Text1'] == "[WORLD]"){
-                            $mapname = $data->data['Text2'];
-                            if ($this->api->level->loadLevel($mapname) === false) {
-                                $data->data['Text1'] = "[BROKEN]";
-                                $this->api->chat->sendTo(false, "[SignPortal] World $mapname not found!", $usrname);
-                                return false;
+                            $this->config->reload();
+                            if(in_array($usrname, $this->config->get('admins'))){
+                                $mapname = $data->data['Text2'];
+                                if ($this->api->level->loadLevel($mapname) === false) {
+                                    $data->data['Text1'] = "[BROKEN]";
+                                    $this->api->chat->sendTo(false, "[SignPortal] World $mapname not found!", $usrname);
+                                    return false;
+                                }
+                                return true;
                             }
-                            return true;
+                            else {
+                                $mapname = $data->data['Text2'];
+                                if ($this->api->level->loadLevel($mapname) === false) {
+                                    $data->data['Text1'] = "[BROKEN]";
+                                    $this->api->chat->sendTo(false, "[SignPortal] World $mapname not found!", $usrname);
+                                    return false;
+                                }
+                            }
                         }
                     }
                 }
