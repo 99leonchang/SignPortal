@@ -4,10 +4,10 @@
 __PocketMine Plugin__ 
 name=SignPortal
 description=Multiworld portal plugin
-version=1.0.1
+version=1.0.3
 author=99leonchang
 class=SignPortal
-apiversion=10
+apiversion=12
 */
 
 class SignPortal implements Plugin{
