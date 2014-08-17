@@ -1,13 +1,12 @@
-SignPortal
+SignPortal v1.1.0
 ==========
 
 PocketMine-MP multiworld sign portal
+Supports PocketMine 1.4
+Stripped down version of previous plugin due to incompleteness of API
 
 ## Configuration
-| Name | Type | Description |
-| :---: | :---: | :--- |
-| __USEPERMISSIONS__ | integer | Changes wether or not to use Permissions. 1=enabled, 0=disabled |
-If usepermissions is enabled, the plugin will only allow admins to create portals
+No Configuration as of this update
 
 ## Usage
 Create a sign with the format below
