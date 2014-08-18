@@ -9,13 +9,13 @@ use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\math\Vector3;
+use pocketmine\tile\Sign;
 /** Not currently used but may be later used  */
 use pocketmine\level\Position;
 use pocketmine\entity\Entity;
 use pocketmine\event\block\BlockPlaceEvent;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\item\Item;
-use pocketmine\tile\Sign;
 use pocketmine\tile\Tile;
 
 class Main extends PluginBase implements Listener{
@@ -27,7 +27,11 @@ class Main extends PluginBase implements Listener{
 
     public function playerBlockTouch(PlayerInteractEvent $event){
         if($event->getBlock()->getID() == 323 || $event->getBlock()->getID() == 63 || $event->getBlock()->getID() == 68){
-            $sign = $event->getPlayer()->getLevel()->getTile(new Vector3($event->getBlock()->x, $event->getBlock()->y, $event->getBlock()->z))->getText();
+            $sign = $event->getPlayer()->getLevel()->getTile($event->getBlock());
+            if(!($sign instanceof Sign)){
+                return;
+            }
+            $sign = $sign->getText();
             if($sign[0]=='[WORLD]'){
                 if(isset($sign[1])){
                     $mapname = $sign[1];
