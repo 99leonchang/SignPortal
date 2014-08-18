@@ -1,0 +1,18 @@
+name: SignPortal
+api: [1.0.0] #Compatible with 1.1.0 and 1.2.0
+version: 1.1.1
+load: POSTWORLD
+main: leonchang99\SignPortal\Main
+author: 99leonchang
+website: https://github.com/99leonchang/SignPortal
+
+commands:
+ generate:
+  description: Generate new world (testing only)
+  usage: "Usage: /generate <worldname>"
+  permission: signportal.command.generate
+
+permissions:
+ signportal.command.generate:
+  description: "Allows the user to run the generate command"
+  default: op
