@@ -35,11 +35,14 @@ class Main extends PluginBase implements Listener{
             if($sign[0]=='[WORLD]'){
                 if(isset($sign[1])){
                     $mapname = $sign[1];
-                    if(Server::getInstance()->loadLevel($mapname) != false){
-                        $event->getPlayer()->teleport(Server::getInstance()->getLevelByName($mapname)->getSafeSpawn());
-                    }
+                    $event->getPlayer()->sendMessage("[SignPortal] Preparing world '".$mapname."'");
                     //Prevents most crashes
-                    $event->getPlayer()->sendMessage("[SignPortal] World '".$mapname."' not found.");
+                    if(Server::getInstance()->loadLevel($mapname) != false){
+                        $event->getPlayer()->sendMessage("[SignPortal] Teleporting...");
+                        $event->getPlayer()->teleport(Server::getInstance()->getLevelByName($mapname)->getSafeSpawn());
+                    }else{
+                        $event->getPlayer()->sendMessage("[SignPortal] World '".$mapname."' not found.");
+                    }
                 }
             }
         }
