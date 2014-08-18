@@ -1,4 +1,4 @@
-SignPortal v1.1.0
+SignPortal v1.1.1
 ==========
 
 PocketMine-MP multiworld sign portal
