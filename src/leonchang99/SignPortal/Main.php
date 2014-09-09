@@ -10,6 +10,7 @@ use pocketmine\command\CommandSender;
 use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\math\Vector3;
 use pocketmine\tile\Sign;
+use pocketmine\event\block\SignChangeEvent;
 /** Not currently used but may be later used  */
 use pocketmine\level\Position;
 use pocketmine\entity\Entity;
@@ -33,7 +34,7 @@ class Main extends PluginBase implements Listener{
             }
             $sign = $sign->getText();
             if($sign[0]=='[WORLD]'){
-                if(isset($sign[1])){
+                if(empty($sign[1]) !== true){
                     $mapname = $sign[1];
                     $event->getPlayer()->sendMessage("[SignPortal] Preparing world '".$mapname."'");
                     //Prevents most crashes
@@ -66,25 +67,41 @@ class Main extends PluginBase implements Listener{
     }
 
     /** Stuff for next update once SignChangeEvent is implemented */
-    /**
     public function tileupdate(SignChangeEvent $event){
-        $sign = $event->getBlock()->getLevel()->getTile(new Vector3($event->getBlock()->x, $event->getBlock()->y, $event->getBlock()->z))->getText();
-        if($sign[0]=='[WORLD]'){
-            if($event->getPlayer()->isOp()){
-                if(isset($sign[1])){
-                    if(Server::getInstance()->loadLevel($sign[1])!==false){
-                        $event->getPlayer()->sendMessage("[SignPortal] Portal to world '".$sign[1]."' created");
-                        return true;
+        if($event->getBlock()->getID() == 323 || $event->getBlock()->getID() == 63 || $event->getBlock()->getID() == 68){
+            //Server::getInstance()->broadcastMessage("lv1");
+            $sign = $event->getPlayer()->getLevel()->getTile($event->getBlock());
+            if(!($sign instanceof Sign)){
+                return true;
+            }
+            $sign = $event->getLines();
+            if($sign[0]=='[WORLD]'){
+                //Server::getInstance()->broadcastMessage("lv2");
+                if($event->getPlayer()->isOp()){
+                    //Server::getInstance()->broadcastMessage("lv3");
+                    if(empty($sign[1]) !==true){
+                        //Server::getInstance()->broadcastMessage("lv4");
+                        if(Server::getInstance()->loadLevel($sign[1])!==false){
+                            //Server::getInstance()->broadcastMessage("lv5");
+                            $event->getPlayer()->sendMessage("[SignPortal] Portal to world '".$sign[1]."' created");
+                            return true;
+                        }
+                        $event->getPlayer()->sendMessage("[SignPortal] World '".$sign[1]."' does not exist!");
+                        //Server::getInstance()->broadcastMessage("f4");
+                        $event->setLine(0,"[BROKEN]");
+                        return false;
                     }
-                    $event->getPlayer()->sendMessage("[SignPortal] World '".$sign[1]."' does not exist!");
+                    $event->getPlayer()->sendMessage("[SignPortal] World name not set");
+                    //Server::getInstance()->broadcastMessage("f3");
+                    $event->setLine(0,"[BROKEN]");
                     return false;
                 }
-                $event->getPlayer()->sendMessage("[SignPortal] World name not set");
-                return false;
+            $event->getPlayer()->sendMessage("[SignPortal] You must be an OP to make a portal");
+            //Server::getInstance()->broadcastMessage("f2");
+            $event->setLine(0,"[BROKEN]");
+            return false;
             }
-        $event->getPlayer()->sendMessage("[SignPortal] You must be an OP to make a portal");
-        return false;
         }
+        return true;
     }
-    **/
 }
