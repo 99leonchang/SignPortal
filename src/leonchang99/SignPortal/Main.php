@@ -39,7 +39,7 @@ class Main extends PluginBase implements Listener{
                     $event->getPlayer()->sendMessage("[SignPortal] Preparing world '".$mapname."'");
                     //Prevents most crashes
                     if(Server::getInstance()->loadLevel($mapname) != false){
-                        $event->getPlayer()->sendMessage("[SignPortal] Teleporting...");
+                        $event->getPlayer()->sendMessage("§bSignPortal§b Teleporting...");
                         $event->getPlayer()->teleport(Server::getInstance()->getLevelByName($mapname)->getSafeSpawn());
                     }else{
                         $event->getPlayer()->sendMessage("[SignPortal] World '".$mapname."' not found.");
@@ -56,7 +56,7 @@ class Main extends PluginBase implements Listener{
             case "generate":
                 if(isset($args[0])){
                     Server::getInstance()->generateLevel($args[0]);
-                    $sender->sendMessage("[SignPortal] World ".$args[0]." is being generated");
+                    $sender->sendMessage("§bSignPortal§b World ".$args[0]." is being generated");
                 }else{
                     $sender->sendMessage("Usage /generate <worldname>");
                 }
@@ -83,22 +83,22 @@ class Main extends PluginBase implements Listener{
                         //Server::getInstance()->broadcastMessage("lv4");
                         if(Server::getInstance()->loadLevel($sign[1])!==false){
                             //Server::getInstance()->broadcastMessage("lv5");
-                            $event->getPlayer()->sendMessage("[SignPortal] Portal to world '".$sign[1]."' created");
+                            $event->getPlayer()->sendMessage("§bSignPortal§b Portal to world '".$sign[1]."' created");
                             return true;
                         }
-                        $event->getPlayer()->sendMessage("[SignPortal] World '".$sign[1]."' does not exist!");
+                        $event->getPlayer()->sendMessage("§bSignPortal§b World '".$sign[1]."' does not exist!");
                         //Server::getInstance()->broadcastMessage("f4");
                         $event->setLine(0,"[BROKEN]");
                         return false;
                     }
-                    $event->getPlayer()->sendMessage("[SignPortal] World name not set");
+                    $event->getPlayer()->sendMessage("§bSignPortal§b World name not set");
                     //Server::getInstance()->broadcastMessage("f3");
                     $event->setLine(0,"[BROKEN]");
                     return false;
                 }
-            $event->getPlayer()->sendMessage("[SignPortal] You must be an OP to make a portal");
+            $event->getPlayer()->sendMessage("§bSignPortal§b You must be an OP to make a portal");
             //Server::getInstance()->broadcastMessage("f2");
-            $event->setLine(0,"[BROKEN]");
+            $event->setLine(0,"§bBROKEN§b");
             return false;
             }
         }
