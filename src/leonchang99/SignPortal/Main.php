@@ -63,6 +63,17 @@ class Main extends PluginBase implements Listener{
                 return true;
             default:
                 return false;
+                
+                case "generate1":
+                if(isset($args[1])){
+                    Server::getInstance()->generateLevel($args[0]);
+                    $sender->sendMessage("[SignPortal] World ".$args[1]." is being generated");
+                }else{
+                    $sender->sendMessage("Usage /generate1 <worldname>");
+                }
+                return true;
+            default:
+                return false;
         }
     }
 
